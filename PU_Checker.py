@@ -429,6 +429,18 @@ class PUChecker:
           Logger.info("Kerberos: Ambari Managed\t:Yes")
       else:
           Logger.info("Kerberos: Ambari Managed\t: No")
+
+      #Check KDC type
+      query = "select t.config_data from clusterconfig t JOIN (select max(version) as version,type_name from clusterconfig group by type_name) m ON t.type_name=m.type_name and t.version=m.version where t.type_name like 'kerberos-env';"
+      Logger.debug("Running query: {0}".format(query))
+      self.cursor.execute(query)
+      row = self.cursor.fetchone()
+      if row and len(row) > 0:
+        data = json.loads(row[0])
+        Logger.info("Kerberos: Type\t{0}".format(data["kdc_type"]))
+      else:
+          Logger.info("Unable to get kerberos type.")
+
     else:
       Logger.info("Kerberos: Enabled\t\t\t: No")
 
