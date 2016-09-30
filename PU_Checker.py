@@ -66,8 +66,7 @@ class DB_TYPE:
 
 class PUChecker:
   """
-  Rolling Upgrade Magician analyzes the database to find and correct any issues.
-  It is a terminal-driven application, that prompts the user to select options.
+  Pre-Upgrade checker analyzes the database and gives all the required to upgrade the cluster.
   """
 
   def __init__(self, argv):
@@ -92,9 +91,6 @@ class PUChecker:
     self.print_usage()
     self.configure()
 
-    # if not self.check_ambari_server_process_down():
-    #   Logger.info("Ambari Server cannot be running while we make database updates. Please call \"ambari-server stop\" and try running this script again.")
-    #   self.terminate()
 
     if not self.check_ambari_server_process_up():
       Logger.info("Ambari Server should be running to get the current status of cluster. Please call \"ambari-server start\" and try running this script again.")
